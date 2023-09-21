@@ -15,6 +15,7 @@ function MovieContainer() {
     const [isLoad, setIsLoad] = useState(true);
     var movieLength;
 
+    
     // * Hvatanje podataka
     useEffect(() => {
         window.addEventListener('keydown', handleKeyDown);
@@ -56,20 +57,31 @@ function MovieContainer() {
         fetchData();
     }, [])
 
+
     // * Event handler
     const handleKeyDown = (e) => {
-        if (e.code === 'ArrowDown') {
-            arrowNavigation('down');
-        } else if (e.code === 'ArrowUp') {
-            arrowNavigation('up');
-        } else if (e.code === 'ArrowLeft') {
-            arrowNavigation('left');
-        } else if (e.code === 'ArrowRight') {
-            arrowNavigation('right');
-        } else if (e.code === 'Enter') {
-            setIsModal(true);
-        } else if (e.code === 'Backspace' || e.code === 'Escape') {
-            setIsModal(false);
+        switch (e.code) {
+            case 'ArrowDown':
+                arrowNavigation('down');
+                break;
+            case 'ArrowUp':
+                arrowNavigation('up');
+                break;
+            case 'ArrowLeft':
+                arrowNavigation('left');
+                break;
+            case 'ArrowRight':
+                arrowNavigation('right');
+                break;
+            case 'Enter':
+                setIsModal(true);
+                break;
+            case 'Backspace':
+            case 'Escape':
+                setIsModal(false);
+                break;
+            default:
+                break;
         }
     }
 
@@ -97,8 +109,8 @@ function MovieContainer() {
         return data.map((type, index) => {
             return <MovieRow
                 key={index}
-                type={type}
                 rowIndex={index}
+                movies={type.Search}
                 selectedType={selectedType}
                 selectedMovie={selectedMovie} />
         })

@@ -1,12 +1,12 @@
 import MovieCard from '../MovieCard/MovieCard';
 import './MovieRow.css';
 
-function MovieRow({ type, rowIndex, selectedType, selectedMovie }) {
+function MovieRow({ movies, rowIndex, selectedType, selectedMovie }) {
     return (
         <>
             <div className='movie-row'>
                     {
-                        type.Search.map((movie, index) => {
+                        movies.map((movie, index) => {
                             return <MovieCard
                                 key={index}
                                 movie={movie}
