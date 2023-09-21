@@ -15,10 +15,8 @@ function MovieContainer() {
     const [isLoad, setIsLoad] = useState(true);
     var movieLength;
 
-
     // * Hvatanje podataka
     useEffect(() => {
-        window.addEventListener('keydown', handleKeyDown);
         window.addEventListener('keydown', handleKeyDown);
 
         const fetchData = async () => {
@@ -58,7 +56,6 @@ function MovieContainer() {
         fetchData();
     }, [])
 
-
     // * Event handler
     const handleKeyDown = (e) => {
         switch (e.code) {
@@ -84,11 +81,6 @@ function MovieContainer() {
             default:
                 break;
         }
-    }
-
-    const setMovieCounter = () => {
-        setSelectedType(0);
-        setSelectedMovie(0);
     }
 
     // * Logika za navigaciju strelicama
@@ -131,6 +123,12 @@ function MovieContainer() {
                 setSelectedType={setSelectedType}
                 setSelectedMovie={setSelectedMovie} />
         })
+    }
+
+    // * Set movie counter at first click
+    const setMovieCounter = () => {
+        setSelectedType(0);
+        setSelectedMovie(0);
     }
 
     return (
