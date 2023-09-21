@@ -1,0 +1,59 @@
+.modal-card-wrapper {
+    width: 100vw;
+    height: 100vh;
+    background-color: #000000d1;
+    position: absolute;
+    z-index: 9999;
+    top: 0;
+    right: 0;
+    display: grid;
+    place-items: center;
+}
+
+.modal-card {
+    width: 40%;
+    height: 90vh;
+    display: block;
+    background: transparent;
+    z-index: 9999;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: end;
+    flex-direction: column;
+    align-items: center;
+    color: #fff;
+    position: relative;
+}
+
+.type,
+.imdb {
+    position: absolute;
+    top: 10px;
+    padding: 7px 14px;
+    background-color: #161616f7;
+}
+
+.type {
+    left: 10px;
+    color: #fff;
+}
+
+.imdb {
+    right: 10px;
+    color: #fff;
+}
+
+.imdb::before {
+    content: '★';
+    color:#f2e351;
+    padding-right: 7px;
+}
+
+.content {
+    background: rgb(0,0,0);
+    background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.5327380952380952) 81%, rgba(0,0,0,0) 100%);
+    width: 100%;
+    padding: 2rem 1rem;
+    color: #fff;
+}

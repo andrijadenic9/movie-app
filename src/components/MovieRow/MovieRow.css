@@ -1,0 +1,7 @@
+.movie-row {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    gap: .6rem;
+    height: 25vh;
+}
