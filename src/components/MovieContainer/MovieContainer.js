@@ -9,15 +9,16 @@ function MovieContainer() {
     const [data, setData] = useState('');
     const [isError, setIsError] = useState(false);
     const [isMovies, setIsMovies] = useState(true);
-    const [selectedType, setSelectedType] = useState(0);
-    const [selectedMovie, setSelectedMovie] = useState(0);
+    const [selectedType, setSelectedType] = useState(null);
+    const [selectedMovie, setSelectedMovie] = useState(null);
     const [isModal, setIsModal] = useState(false);
     const [isLoad, setIsLoad] = useState(true);
     var movieLength;
 
-    
+
     // * Hvatanje podataka
     useEffect(() => {
+        window.addEventListener('keydown', handleKeyDown);
         window.addEventListener('keydown', handleKeyDown);
 
         const fetchData = async () => {
@@ -44,7 +45,7 @@ function MovieContainer() {
                 if (movieResults.length > 0) {
                     setIsMovies(true);
                     setData(movieResults);
-                    movieLength = movieResults[selectedType].Search.length;
+                    movieLength = movieResults[0].Search.length;
                 } else {
                     setIsMovies(false);
                 }
@@ -85,20 +86,33 @@ function MovieContainer() {
         }
     }
 
+    const setMovieCounter = () => {
+        setSelectedType(0);
+        setSelectedMovie(0);
+    }
+
     // * Logika za navigaciju strelicama
     const arrowNavigation = (key) => {
         if (key === 'down' || key === 'up') {
             // * Menjamo selectedType (row) state ako korisnik menja row
             setSelectedType((prev) => {
-                if (key === 'down' && prev < movieTypes.length - 1) return prev + 1;
-                if (key === 'up' && prev > 0) return prev - 1;
+
+                // * Prvim klikom na strelice postavljamo 1. film u fokus
+                if (prev === null) return setMovieCounter(prev);
+
+                if (key === 'down' && prev < movieTypes.length - 1 && prev !== null) return prev + 1;
+                if (key === 'up' && prev > 0 && prev !== null) return prev - 1;
                 return prev;
             })
         } else if (key === 'left' || key === 'right') {
             // * Menjamo selectedMovie (film) state ako korisnik menja film u istom rowu
             setSelectedMovie((prev) => {
-                if (key === 'right' && prev < movieLength - 1) return prev + 1;
-                if (key === 'left' && prev > 0) return prev - 1;
+
+                // * Prvim klikom na strelice postavljamo 1. film u fokus
+                if (prev === null) return setMovieCounter();
+
+                if (key === 'right' && prev < movieLength - 1 && prev !== null) return prev + 1;
+                if (key === 'left' && prev > 0 && prev !== null) return prev - 1;
                 return prev;
             })
         }
@@ -111,8 +125,11 @@ function MovieContainer() {
                 key={index}
                 rowIndex={index}
                 movies={type.Search}
+                setIsModal={setIsModal}
                 selectedType={selectedType}
-                selectedMovie={selectedMovie} />
+                selectedMovie={selectedMovie}
+                setSelectedType={setSelectedType}
+                setSelectedMovie={setSelectedMovie} />
         })
     }
 
