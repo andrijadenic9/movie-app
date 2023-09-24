@@ -1,7 +1,17 @@
 .movie-row {
-    width: 100vw;
+    height: 33.3vh;
+    gap: 1rem;
+    padding: 30px; 
     display: flex;
-    justify-content: center;
-    gap: .6rem;
-    height: 25vh;
+    overflow-x: auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.movie-row:focus {
+    outline: none;
+}
+
+.movie-row::-webkit-scrollbar {
+    display: none;
 }

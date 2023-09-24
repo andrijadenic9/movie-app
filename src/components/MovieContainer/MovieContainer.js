@@ -9,15 +9,15 @@ function MovieContainer() {
     const [data, setData] = useState('');
     const [isError, setIsError] = useState(false);
     const [isMovies, setIsMovies] = useState(true);
-    const [selectedType, setSelectedType] = useState(null);
-    const [selectedMovie, setSelectedMovie] = useState(null);
+    const [selectedType, setSelectedType] = useState(0);
+    const [selectedMovie, setSelectedMovie] = useState(0);
     const [isModal, setIsModal] = useState(false);
     const [isLoad, setIsLoad] = useState(true);
     var movieLength;
 
     // * Hvatanje podataka
     useEffect(() => {
-        window.addEventListener('keydown', handleKeyDown);
+        window.addEventListener('keydown', handleArrows);
 
         const fetchData = async () => {
             setIsLoad(true);
@@ -57,7 +57,7 @@ function MovieContainer() {
     }, [])
 
     // * Event handler
-    const handleKeyDown = (e) => {
+    const handleArrows = (e) => {
         switch (e.code) {
             case 'ArrowDown':
                 arrowNavigation('down');
@@ -86,23 +86,17 @@ function MovieContainer() {
     // * Logika za navigaciju strelicama
     const arrowNavigation = (key) => {
         if (key === 'down' || key === 'up') {
+
             // * Menjamo selectedType (row) state ako korisnik menja row
             setSelectedType((prev) => {
-
-                // * Prvim klikom na strelice postavljamo 1. film u fokus
-                if (prev === null) return setMovieCounter(prev);
-
                 if (key === 'down' && prev < movieTypes.length - 1 && prev !== null) return prev + 1;
                 if (key === 'up' && prev > 0 && prev !== null) return prev - 1;
                 return prev;
             })
         } else if (key === 'left' || key === 'right') {
+            
             // * Menjamo selectedMovie (film) state ako korisnik menja film u istom rowu
             setSelectedMovie((prev) => {
-
-                // * Prvim klikom na strelice postavljamo 1. film u fokus
-                if (prev === null) return setMovieCounter();
-
                 if (key === 'right' && prev < movieLength - 1 && prev !== null) return prev + 1;
                 if (key === 'left' && prev > 0 && prev !== null) return prev - 1;
                 return prev;
@@ -123,12 +117,6 @@ function MovieContainer() {
                 setSelectedType={setSelectedType}
                 setSelectedMovie={setSelectedMovie} />
         })
-    }
-
-    // * Set movie counter at first click
-    const setMovieCounter = () => {
-        setSelectedType(0);
-        setSelectedMovie(0);
     }
 
     return (

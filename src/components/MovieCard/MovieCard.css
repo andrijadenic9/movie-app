@@ -1,10 +1,12 @@
 .movie-card {
-    display: block;
-    width: 125px;
+    display: inline-block;
+    width: 350px;
     background-repeat: no-repeat;
-    background-position: center;
     background-size: cover;
-    border-radius: 5px;
+
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
 }
 
 .selected-card {
