@@ -2,10 +2,10 @@ import { useEffect, useRef, useState, useLayoutEffect } from 'react';
 import MovieCard from '../MovieCard/MovieCard';
 import './MovieRow.css';
 
-function MovieRow({ movies, rowIndex, selectedType, selectedMovie, setSelectedType, setSelectedMovie, setIsModal, container }) {
+function MovieRow({ movies, rowIndex, selectedType, selectedMovie, setSelectedType, setSelectedMovie, setIsModal }) {
     const rowElement = useRef();
 
-    // * SCROLL NA TOCKIC MISA
+    // * OTKOMENTARISATI ZA Scroll po X osi na mouse wheel
     // useEffect(() => {
     //     const handleScroll = (e) => {
     //         if (rowElement.current) {
@@ -16,56 +16,31 @@ function MovieRow({ movies, rowIndex, selectedType, selectedMovie, setSelectedTy
 
     // }, [selectedType])
 
-    // const scrollToElement = (e) => {
-    //     if (selectedType === parseInt(rowElement.current.id))
-    //         console.log(rowElement, 'rowElement')
-    //     switch (e.code) {
-    //         case 'ArrowDown':
-    //             rowElement.current.scrollIntoView({ behavior: 'smooth' });
-    //             console.log('USAO U DOWN')
-    //             break;
-    //         case 'ArrowUp':
-    //             rowElement.current.scrollIntoView({ behavior: 'smooth' });
-    //             console.log('USAO U UP')
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     window.addEventListener('keydown', scrollToElement);
-
-    // }, [selectedType])
-
+    // * Ako je film u fokusu van vidnog polja, pomeram red tako da je film u centru view-a
     useEffect(() => {
-
-        // * Ako je film u fokusu van vidnog polja, pomeram red tako da je film u centru view-a
         if (selectedType === parseInt(rowElement.current.id)) {
             const focusedElement = rowElement.current.children[selectedMovie];
             if (focusedElement) {
+                // * Ovde je postavljen skrol za X osu
                 const rowWidth = rowElement.current.offsetWidth;
                 const elementWidth = focusedElement.offsetWidth;
                 const elementLeft = focusedElement.offsetLeft;
                 const scrollOffsetX = elementLeft + elementWidth / 2 - rowWidth / 2;
-                rowElement.current.scrollLeft = scrollOffsetX; // ovde je postavljeno skrol za X osu
+                rowElement.current.scrollLeft = scrollOffsetX;
 
-                const rowHeight = rowElement.current.offsetHeight;
-                const elementHeight = focusedElement.offsetHeight;
-                const elementTop = focusedElement.offsetTop;
-                const scrollOffsetY = elementTop + elementHeight / 2 - rowHeight / 2;
+                // * Scrol za Y osu zakomentarisan jer sam zamislio da tako radi, medjutim nije ---->
+                // const rowHeight = rowElement.current.offsetHeight;
+                // const elementHeight = focusedElement.offsetHeight;
+                // const elementTop = focusedElement.offsetTop;
+                // const scrollOffsetY = elementTop + elementHeight / 2 - rowHeight / 2;
+
+                // * S obzirom da ova linija ne radi, morao sam da koristim buildin metodu scrollIntoView za scrol po Y osi, ispod --->
                 // rowElement.current.scrollTop = scrollOffsetY; // ! scrollTop problem
 
-                // window.scrollTo({
-                //     top: scrollOffsetY,
-                //     behavior: 'smooth',
-                // });
-
-                // * ovo je za sada najblize, na strelice levo i desno skroluje po Y osi na sredinu
-                // rowElement.current.scrollIntoView(true)
+                // * Ovde je postavljen scrol za Y osu
                 rowElement.current.scrollIntoView({
                     behavior: 'smooth',
-                    inline: 'end',
+                    inline: 'center',
                     block: 'center'
                 })
             }
@@ -78,7 +53,6 @@ function MovieRow({ movies, rowIndex, selectedType, selectedMovie, setSelectedTy
                 id={rowIndex}
                 ref={rowElement}
                 className='movie-row'
-                // tabIndex='0'
                 tabIndex={selectedType === rowIndex ? '0' : '-1'}
                 style={{ overflowX: selectedType === rowIndex ? 'auto' : 'hidden' }}
             >
@@ -96,7 +70,6 @@ function MovieRow({ movies, rowIndex, selectedType, selectedMovie, setSelectedTy
                     />
                 ))}
             </div>
-            {/* {console.log(selectedType, 'selectedType')} */}
         </>
     );
 }

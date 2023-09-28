@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import MovieRow from '../MovieRow/MovieRow';
 import ModalCard from '../ModalCard/ModalCard';
 import Loader from '../Loader/Loader';
@@ -14,8 +14,6 @@ function MovieContainer() {
     const [isModal, setIsModal] = useState(false);
     const [isLoad, setIsLoad] = useState(true);
     var movieLength;
-
-    const container = useRef();
 
     // * Hvatanje podataka
     useEffect(() => {
@@ -85,44 +83,26 @@ function MovieContainer() {
         }
     }
 
-    // todo - izbaciti prev !== null
     // * Logika za navigaciju strelicama
     const arrowNavigation = (key) => {
         if (key === 'down' || key === 'up') {
 
             // * Menjamo selectedType (row) state ako korisnik menja row
             setSelectedType((prev) => {
-                if (key === 'down' && prev < movieTypes.length - 1 && prev !== null) return prev + 1;
-                if (key === 'up' && prev > 0 && prev !== null) return prev - 1;
+                if (key === 'down' && prev < movieTypes.length - 1) return prev + 1;
+                if (key === 'up' && prev > 0) return prev - 1;
                 return prev;
             })
         } else if (key === 'left' || key === 'right') {
 
             // * Menjamo selectedMovie (film) state ako korisnik menja film u istom rowu
             setSelectedMovie((prev) => {
-                if (key === 'right' && prev < movieLength - 1 && prev !== null) return prev + 1;
-                if (key === 'left' && prev > 0 && prev !== null) return prev - 1;
+                if (key === 'right' && prev < movieLength - 1) return prev + 1;
+                if (key === 'left' && prev > 0) return prev - 1;
                 return prev;
             })
         }
     }
-
-    // const arrowNavigation = (key) => {
-    //     if (key === 'down' || key === 'up') {
-    //         setSelectedType((prev) => {
-    //             if (key === 'down' && prev < movieTypes.length - 1 && prev !== null) return prev + 1;
-    //             if (key === 'up' && prev > 0 && prev !== null) return prev - 1;
-    //             return prev;
-    //         });
-    //     } else if (key === 'left' || key === 'right') {
-    //         setSelectedMovie((prev) => {
-    //             if (key === 'right' && prev < movieLength - 1 && prev !== null) return prev + 1;
-    //             if (key === 'left' && prev > 0 && prev !== null) return prev - 1;
-    //             return prev;
-    //         });
-    //     }
-    // };
-    
 
     // * Display rows function
     const displayMovies = () => {
@@ -131,7 +111,6 @@ function MovieContainer() {
                 key={index}
                 rowIndex={index}
                 movies={type.Search}
-                container={container}
                 setIsModal={setIsModal}
                 selectedType={selectedType}
                 selectedMovie={selectedMovie}
@@ -144,7 +123,7 @@ function MovieContainer() {
         <>
             {
                 data ?
-                    <div ref={container} className="movie-container">
+                    <div className="movie-container">
                         {displayMovies()}
                     </div> :
                     null

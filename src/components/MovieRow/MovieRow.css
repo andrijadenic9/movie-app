@@ -1,19 +1,12 @@
 .movie-row {
-    /* height: 33.3vh; */
-    height: 300px;
+    height: 30vh;
+    /* height: 300px; */
     gap: 1rem;
     padding: 30px; 
     display: flex;
     overflow-x: auto;
-    /* overflow-y: hidden; */
     overflow-y: auto;
     white-space: nowrap;
-
-    /* display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    height: 33.3vh;
-    white-space: nowrap; */
 }
 
 .movie-row:focus {

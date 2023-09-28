@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import './MovieCard.css';
 
-function MovieCard({ movie, rowIndex, cardIndex, selectedType, selectedMovie, setIsModal }) {
+function MovieCard({ movie, rowIndex, cardIndex, selectedType, selectedMovie }) {
     const card = useRef();
 
     // * Obelezavamo movie card tako sto postavljamo klasu u zavisnosti da li se korisnik nalazi na njoj
@@ -14,7 +14,6 @@ function MovieCard({ movie, rowIndex, cardIndex, selectedType, selectedMovie, se
         <div
             ref={card}
             tabIndex='0'
-            // onClick={() => setIsModal(true)}
             className={`movie-card ${handleClass()}`}
             style={{ backgroundImage: `url(${movie.Poster})` }}
         ></div>
