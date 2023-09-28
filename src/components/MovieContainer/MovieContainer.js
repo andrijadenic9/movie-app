@@ -5,12 +5,12 @@ import Loader from '../Loader/Loader';
 import './MovieContainer.css';
 
 function MovieContainer() {
-    const movieTypes = ['Batman', 'Avengers', 'Superman'];
+    const movieTypes = ['Batman', 'Avengers', 'Superman', 'Aquaman'];
     const [data, setData] = useState('');
     const [isError, setIsError] = useState(false);
     const [isMovies, setIsMovies] = useState(true);
-    const [selectedType, setSelectedType] = useState(0);
-    const [selectedMovie, setSelectedMovie] = useState(0);
+    const [selectedType, setSelectedType] = useState({});
+    const [selectedMovie, setSelectedMovie] = useState({});
     const [isModal, setIsModal] = useState(false);
     const [isLoad, setIsLoad] = useState(true);
     var movieLength;
@@ -40,9 +40,11 @@ function MovieContainer() {
             // * Hvatamo rezlutate svim promisa uz pomoc Promise.all() i smestamo ih u setData()
             try {
                 const movieResults = await Promise.all(moviePromises);
+                console.log(movieResults, 'movieResults')
                 if (movieResults.length > 0) {
                     setIsMovies(true);
                     setData(movieResults);
+                    setSelectedType(movieResults[0].Search);
                     movieLength = movieResults[0].Search.length;
                 } else {
                     setIsMovies(false);
@@ -143,6 +145,11 @@ function MovieContainer() {
             {/* // * Izbacujemo klijentu ako dodje do gresaka prilikom hvatanja podataka ili ako nema podataka */}
             {isError ? <h1>GRESKA NA SERVERU</h1> : null}
             {!isMovies ? <h1>NEMA FILMOVA</h1> : null}
+
+            {
+
+                console.log(selectedType, 'selectedType')
+            }
         </>
     )
 }

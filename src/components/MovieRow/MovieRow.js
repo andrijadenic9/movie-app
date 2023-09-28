@@ -1,70 +1,81 @@
-import { useEffect, useRef } from 'react';
+// src/components/MovieRow.js
+import React, { useState, useEffect, useRef } from 'react';
 import MovieCard from '../MovieCard/MovieCard';
-import './MovieRow.css';
 
-function MovieRow({ movies, rowIndex, selectedType, selectedMovie, setSelectedType, setSelectedMovie, setIsModal }) {
-    const rowElement = useRef();
+const MovieRow = ({ movies }) => {
+    const [focusedIndex, setFocusedIndex] = useState(0);
+    const rowRef = useRef(null);
 
     useEffect(() => {
-        const handleScroll = (e) => {
-            if (rowElement.current) {
-                rowElement.current.scrollLeft += e.deltaY;
+        // Dodajte event listener za tastaturu kako biste pratili strelice
+        const handleKeyPress = (event) => {
+            switch (event.key) {
+                case 'ArrowUp':
+                    // Pomaknite fokus na prethodni red (row)
+                    // Ovo pretpostavlja da imate četiri reda u App komponenti.
+                    // Ako imate dinamički broj redova, prilagodite logiku.
+                    setFocusedIndex(0);
+                    break;
+                case 'ArrowDown':
+                    // Pomaknite fokus na sledeći red (row)
+                    setFocusedIndex(0);
+                    break;
+                case 'ArrowLeft':
+                    // Pomaknite fokus na prethodni film
+                    setFocusedIndex((prevIndex) => Math.max(prevIndex - 1, 0));
+                    break;
+                case 'ArrowRight':
+                    // Pomaknite fokus na sledeći film
+                    setFocusedIndex((prevIndex) => Math.min(prevIndex + 1, movies.length - 1));
+                    break;
+                default:
+                    break;
             }
         };
-        window.addEventListener('keydown', changeRow);
-        rowElement.current.addEventListener('wheel', handleScroll);
 
-    }, [selectedType])
+        window.addEventListener('keydown', handleKeyPress);
 
-    // * Osiguravamo da bude fokusiran samo onaj row koji zelimo da pomeramo
-    const changeRow = () => {
-        if (selectedType === parseInt(rowElement.current.id)) {
-            rowElement.current.focus();
+        return () => {
+            window.removeEventListener('keydown', handleKeyPress);
+        };
+    }, [movies]);
+
+    useEffect(() => {
+        // Ako je film u fokusu van vidnog polja, pomerite red tako da je film u centru view-a
+        if (rowRef.current) {
+            const focusedElement = rowRef.current.children[focusedIndex];
+            if (focusedElement) {
+                focusedElement.scrollIntoView({
+                    behavior: 'smooth',
+                    inline: 'center', // Pomera fokusirani film u centar view-a
+                });
+            }
         }
-    }
-
-    // * Navigacija strelicama pomeranje za odredjeni width
-    const handleKeyDown = (e) => {
-        const row = rowElement.current;
-        const card = rowElement.current.children[selectedMovie];
-        const cardLeft = card.offsetLeft;
-
-        switch (e.code) {
-            case 'ArrowLeft':
-                row.scrollLeft = cardLeft - row.clientWidth / 2 + card.offsetWidth / 2;
-                break;
-            case 'ArrowRight':
-                row.scrollLeft = cardLeft - card.offsetWidth;
-                break;
-            default:
-                break;
-        }
-    };
+    }, [focusedIndex]);
 
     return (
-        <div
-            ref={rowElement}
-            id={rowIndex}
-            className='movie-row'
-            onKeyDown={handleKeyDown}
-            tabIndex={selectedType === rowIndex ? '0' : '-1'}
-            style={{ overflowX: selectedType === rowIndex ? 'auto' : 'hidden' }}
-        >
-            {movies.map((movie, index) => (
-                <MovieCard
-                    key={index}
-                    movie={movie}
-                    cardIndex={index}
-                    rowIndex={rowIndex}
-                    setIsModal={setIsModal}
-                    selectedType={selectedType}
-                    selectedMovie={selectedMovie}
-                    setSelectedType={setSelectedType}
-                    setSelectedMovie={setSelectedMovie}
-                />
-            ))}
-        </div>
+        <>
+            <div className="movie-row" ref={rowRef}>
+                {movies.map((movie, index) => (
+                    <div
+                        key={index}
+                        className={`movie-item ${focusedIndex === index ? 'focused' : ''}`}
+                    >
+
+                        <MovieCard
+                            movie={movie}
+                            // rowIndex={rowIndex}
+                            // cardIndex={cardIndex}
+                            // selectedType={selectedType}
+                            // selectedMovie={selectedMovie}
+                            // setIsModal={setIsModal}
+                        />
+                    </div>
+                ))}
+            </div>
+            {console.log(movies, 'movies')}
+        </>
     );
-}
+};
 
 export default MovieRow;
