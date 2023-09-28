@@ -14,7 +14,7 @@ function MovieCard({ movie, rowIndex, cardIndex, selectedType, selectedMovie, se
         <div
             ref={card}
             tabIndex='0'
-            onClick={() => setIsModal(true)}
+            // onClick={() => setIsModal(true)}
             className={`movie-card ${handleClass()}`}
             style={{ backgroundImage: `url(${movie.Poster})` }}
         ></div>
